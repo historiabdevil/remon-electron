@@ -1,5 +1,6 @@
 <div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+  <mat-video #v_local [autoplay]="true" [fullscreen]="true" [muted]="true"></mat-video>
+  <video id="video" autoplay muted controls></video>
+  <mat-button-toggle (click)="onLiveCastStart($event)">Start</mat-button-toggle>
+  <mat-button-toggle (click)="onLiveCastStop($event)">Stop</mat-button-toggle>
 </div>
