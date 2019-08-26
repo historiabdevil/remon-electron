@@ -18,6 +18,8 @@ import { HomeModule } from './home/home.module';
 
 import { AppComponent } from './app.component';
 import {MatVideoModule} from 'mat-video';
+import {MatIconModule, MatListModule, MatToolbarModule, MatSidenavModule} from '@angular/material';
+
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,7 +43,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

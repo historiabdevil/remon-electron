@@ -1,6 +1,34 @@
-<div class="container">
-  <mat-video #v_local [autoplay]="true" [fullscreen]="true" [muted]="true"></mat-video>
-  <video id="video" autoplay muted controls></video>
-  <mat-button-toggle (click)="onLiveCastStart($event)">Start</mat-button-toggle>
-  <mat-button-toggle (click)="onLiveCastStop($event)">Stop</mat-button-toggle>
+<div class="containerX" fxLayout="row wrap" [formGroup]="flexForm">
+  <div fxLayout="row" fxLayoutAlign="center center"></div>
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3px">
+
+    <div fxFlex="33" fxFlexOffset="33">
+      <video [srcObject]="src_video | async" id="video" width="100%" height="100%" autoplay muted controls>
+
+      </video>
+    </div>
+
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
+    <div fxLayout="column" fxFlex="33">
+      <mat-form-field fxFlex="0 0 auto">
+        <mat-label>Video Devices</mat-label>
+        <mat-select fxFill matNativeControl [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeVideoSource($event)" name="device">
+          <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Audio Devices</mat-label>
+        <mat-select matNativeControl [(ngModel)]="selectedAudioDevice" (selectionChange)="onChangeAudioSource($event)" name="device">
+          <mat-option *ngFor="let device of a_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxLayout="column" fxFlex="33" dir="ltr">
+
+      <button mat-fab (click)="onLiveCastStart($event)">Start</button>
+      <button mat-fab (click)="onLiveCastStop($event)">Stop</button>
+      <button mat-fab (click)="onLiveCastSwitch($event)">Switch</button>
+    </div>
+  </div>
 </div>
