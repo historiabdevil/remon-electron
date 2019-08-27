@@ -9,26 +9,29 @@
     </div>
 
   </div>
+  <mat-form-field >
+    <mat-label>Video Devices</mat-label>
+    <mat-select matNativeControl [(ngModel)]="selectedVideoDevice"
+                (selectionChange)="onChangeVideoSource($event)" name="device">
+      <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
+    </mat-select>
+  </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
-    <div fxLayout="column" fxFlex="33">
-      <mat-form-field fxFlex="0 0 auto">
-        <mat-label>Video Devices</mat-label>
-        <mat-select fxFill matNativeControl [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeVideoSource($event)" name="device">
-          <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div fxLayout="column" fxFlex="33">
+
       <mat-form-field>
         <mat-label>Audio Devices</mat-label>
-        <mat-select matNativeControl [(ngModel)]="selectedAudioDevice" (selectionChange)="onChangeAudioSource($event)" name="device">
+        <mat-select matNativeControl [(ngModel)]="selectedAudioDevice" (selectionChange)="onChangeAudioSource($event)"
+                    name="device">
           <mat-option *ngFor="let device of a_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <div fxLayout="column" fxFlex="33" dir="ltr">
+    <div fxLayout="row wrap" fxFlex="33" dir="ltr">
 
-      <button mat-fab (click)="onLiveCastStart($event)">Start</button>
-      <button mat-fab (click)="onLiveCastStop($event)">Stop</button>
-      <button mat-fab (click)="onLiveCastSwitch($event)">Switch</button>
+      <button mat-raised-button color="primary" (click)="onLiveCastStart($event)">Start</button>
+      <button mat-stroked-button (click)="onLiveCastStop($event)">Stop</button>
+      <button mat-stroked-button (click)="onLiveCastSwitch($event)">Switch</button>
     </div>
   </div>
 </div>
