@@ -1,27 +1,22 @@
-<mat-select
-            (selectionChange)="onChangeVideoSource($event)" name="device">
-  <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
-</mat-select>
+<div class="containerX">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5%"
+       fxLayoutAlign="space-around center ">
+    <div fxFlex fxLayout="row">
+      <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar></div>
+          <mat-card-title>Source Video</mat-card-title>
+        </mat-card-header>
+        <video mat-card-image [srcObject]="src_video | async" id="video" width="100%" height="100%" autoplay muted
+               controls>
+        </video>
 
-<!--<mat-form-field >-->
-<!--  <mat-label>Video Devices</mat-label>-->
-<!--  <mat-select matNativeControl-->
-<!--              (selectionChange)="onChangeVideoSource($event)" name="device">-->
-<!--    <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>-->
-<!--  </mat-select>-->
-<!--</mat-form-field>-->
-<div class="containerX" fxLayout="row wrap">
-  <div fxLayout="row" fxLayoutAlign="center center"></div>
-  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3px">
-
-    <div fxFlex="33" fxFlexOffset="33">
-      <video [srcObject]="src_video | async" id="video" width="100%" height="100%" autoplay muted controls>
-
-      </video>
+      </mat-card>
     </div>
-
   </div>
-  <form fxLayout="column" [formGroup]="test">
+
+
+  <form fxFlex fxLayout="row" [formGroup]="test">
     <div class="input-row">
       <mat-form-field fxFlex>
         <mat-label>Video Devices</mat-label>

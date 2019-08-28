@@ -21,6 +21,8 @@ import { AppComponent } from './app.component';
 import {MatVideoModule} from 'mat-video';
 import {MatIconModule, MatListModule, MatToolbarModule, MatSidenavModule} from '@angular/material';
 import {MyMaterialModule} from './my.material.module';
+import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
+import {HomeComponent} from './home/home.component';
 
 
 // AoT requires an exported function for factories
@@ -31,7 +33,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    MyMaterialModule,
+
     BrowserModule,
     FormsModule,
     HttpClientModule,
@@ -46,6 +48,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    FlexLayoutModule,
+    MyMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
