@@ -1,4 +1,16 @@
-<div class="containerX" fxLayout="row wrap" [formGroup]="flexForm">
+<mat-select
+            (selectionChange)="onChangeVideoSource($event)" name="device">
+  <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
+</mat-select>
+
+<!--<mat-form-field >-->
+<!--  <mat-label>Video Devices</mat-label>-->
+<!--  <mat-select matNativeControl-->
+<!--              (selectionChange)="onChangeVideoSource($event)" name="device">-->
+<!--    <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>-->
+<!--  </mat-select>-->
+<!--</mat-form-field>-->
+<div class="containerX" fxLayout="row wrap">
   <div fxLayout="row" fxLayoutAlign="center center"></div>
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="3px">
 
@@ -9,19 +21,24 @@
     </div>
 
   </div>
-  <mat-form-field >
-    <mat-label>Video Devices</mat-label>
-    <mat-select matNativeControl [(ngModel)]="selectedVideoDevice"
-                (selectionChange)="onChangeVideoSource($event)" name="device">
-      <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <form fxLayout="column" [formGroup]="test">
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <mat-label>Video Devices</mat-label>
+        <mat-select
+          (selectionChange)="onChangeVideoSource($event)" name="device">
+          <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <input matInput placeholder="ABCDEF" type="text">
+    </div>
+  </form>
   <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
-      <div fxLayout="column" fxFlex="33">
+    <div fxLayout="column" fxFlex="33">
 
       <mat-form-field>
         <mat-label>Audio Devices</mat-label>
-        <mat-select matNativeControl [(ngModel)]="selectedAudioDevice" (selectionChange)="onChangeAudioSource($event)"
+        <mat-select matNativeControl (selectionChange)="onChangeAudioSource($event)"
                     name="device">
           <mat-option *ngFor="let device of a_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
         </mat-select>

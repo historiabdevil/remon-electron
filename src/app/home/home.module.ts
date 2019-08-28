@@ -12,11 +12,11 @@ import {MatVideoModule} from 'mat-video';
 import {FlexModule} from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MyMaterialModule} from '../my.material.module';
 
 @NgModule({
   declarations: [HomeComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule, MatVideoModule, FlexModule,
-    MatButtonModule, BrowserAnimationsModule, MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule]
+  imports: [CommonModule, SharedModule, HomeRoutingModule, MyMaterialModule, FlexModule, ReactiveFormsModule]
 })
 export class HomeModule {
 }

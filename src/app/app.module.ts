@@ -10,6 +10,7 @@ import { SharedModule } from './shared/shared.module';
 
 import { AppRoutingModule } from './app-routing.module';
 
+
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -19,6 +20,7 @@ import { HomeModule } from './home/home.module';
 import { AppComponent } from './app.component';
 import {MatVideoModule} from 'mat-video';
 import {MatIconModule, MatListModule, MatToolbarModule, MatSidenavModule} from '@angular/material';
+import {MyMaterialModule} from './my.material.module';
 
 
 // AoT requires an exported function for factories
@@ -29,6 +31,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    MyMaterialModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
@@ -36,7 +39,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedModule,
     HomeModule,
     AppRoutingModule,
-    MatVideoModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -44,10 +46,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    MatToolbarModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
