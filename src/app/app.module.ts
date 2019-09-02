@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import '../polyfills';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
@@ -14,15 +14,14 @@ import { AppRoutingModule } from './app-routing.module';
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-import { HomeModule } from './home/home.module';
-
 import { AppComponent } from './app.component';
-import {MatVideoModule} from 'mat-video';
-import {MatIconModule, MatListModule, MatToolbarModule, MatSidenavModule} from '@angular/material';
-import {MyMaterialModule} from './my.material.module';
+import {MaterialModule} from './material.module';
 import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
 import {HomeComponent} from './home/home.component';
+import {ElectronService} from './core/services';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { FirstComponent } from './first/first.component';
+
 
 
 // AoT requires an exported function for factories
@@ -31,15 +30,16 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent, FirstComponent],
   imports: [
-
+    MaterialModule,
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     CoreModule,
     SharedModule,
-    HomeModule,
+    FlexLayoutModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
@@ -48,10 +48,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    FlexLayoutModule,
-    MyMaterialModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ElectronService],
+  bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

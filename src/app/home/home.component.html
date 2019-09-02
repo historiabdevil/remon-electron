@@ -1,49 +1,16 @@
-<div class="containerX">
-  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5%"
-       fxLayoutAlign="space-around center ">
-    <div fxFlex fxLayout="row">
-      <mat-card>
-        <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>Source Video</mat-card-title>
-        </mat-card-header>
-        <video mat-card-image [srcObject]="src_video | async" id="video" width="100%" height="100%" autoplay muted
-               controls>
-        </video>
-
-      </mat-card>
-    </div>
-  </div>
-
-
-  <form fxFlex fxLayout="row" [formGroup]="test">
-    <div class="input-row">
-      <mat-form-field fxFlex>
-        <mat-label>Video Devices</mat-label>
-        <mat-select
-          (selectionChange)="onChangeVideoSource($event)" name="device">
-          <mat-option *ngFor="let device of v_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <input matInput placeholder="ABCDEF" type="text">
-    </div>
-  </form>
-  <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
-    <div fxLayout="column" fxFlex="33">
-
-      <mat-form-field>
-        <mat-label>Audio Devices</mat-label>
-        <mat-select matNativeControl (selectionChange)="onChangeAudioSource($event)"
-                    name="device">
-          <mat-option *ngFor="let device of a_devices | async" [value]="device.value">{{device.viewValue}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div fxLayout="row wrap" fxFlex="33" dir="ltr">
-
-      <button mat-raised-button color="primary" (click)="onLiveCastStart($event)">Start</button>
-      <button mat-stroked-button (click)="onLiveCastStop($event)">Stop</button>
-      <button mat-stroked-button (click)="onLiveCastSwitch($event)">Switch</button>
-    </div>
-  </div>
-</div>
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="snav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1>Studio</h1>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #snav [mode]="'over'">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home">Home</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content fxFlex>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

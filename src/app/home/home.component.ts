@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
   test: FormGroup;
 
   constructor(fb: FormBuilder) {
-    this.test = fb.group({});
+    // this.test = fb.group({});group
   }
 
   ngOnInit() {
@@ -72,8 +72,8 @@ export class HomeComponent implements OnInit {
         console.log(stream);
       }
     );
-    this.v_devices = this.getDevice('video');
-    this.a_devices = this.getDevice('audio');
+    // this.v_devices = this.getDevice('video');
+    // this.a_devices = this.getDevice('audio');
   }
 
 
