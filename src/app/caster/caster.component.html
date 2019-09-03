@@ -1,1 +1,125 @@
-<p>caster works!</p>
+<div class="container-fluid mt-3">
+  <div fxFlex fxLayout="row wrap" fxLayoutAlign="center stretch" fxLayoutGap="20px">
+
+    <mat-card fxFlex>
+      <mat-card-header>
+        <mat-card-title>원본영상</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxFlex class="embed-responsive embed-responsive-16by9" (mouseover)="onEnterOverPlayer($event)"
+             (mouseleave)="onLeavePlayer($event)">
+          <video #v_src [srcObject]="v_src_obj" [src]="v_src" autoplay class="embed-responsive-item">
+            <mat-icon class="vertial-center center-button">videocam_off</mat-icon>
+          </video>
+<!--          <div class="embed-responsive-item" [fxShow]="isShowSrcBtn">-->
+<!--            <button class="vertial-center" mat-icon-button (click)="onClickPlay($event)">-->
+<!--              <mat-icon class="center-button">{{play_status}}</mat-icon>-->
+<!--            </button>-->
+<!--          </div>-->
+        </div>
+      </mat-card-content>
+      <mat-card-actions></mat-card-actions>
+    </mat-card>
+    <mat-card fxFlex>
+      <mat-card-header>
+        <mat-card-title>송출영상</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxFlex class="embed-responsive embed-responsive-16by9">
+          <video id="v_cast" #v_dst autoplay class="embed-responsive-item">
+            <mat-icon class="vertial-center center-button">videocam_off</mat-icon>
+          </video>
+        </div>
+      </mat-card-content>
+      <mat-card-actions></mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div fxFlex fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap="20px">
+    <div fxFlex class="container-fluid mt-1">
+      <div fxFlex fxLayout="column wrap" fxLayoutAlign="start stretch" fxLayoutGap="20px">
+        <mat-form-field fxFlex>
+          <mat-label>Capture Video Devices</mat-label>
+          <mat-select [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeVideoSource($event)">
+            <mat-option *ngFor="let device of v_devices | async"
+                        [value]="device.value">{{device.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label>Capture Audio Devices</mat-label>
+          <mat-select [(ngModel)]="selectedAudioDevice" (selectionChange)="onChangeAudioSource($event)">
+            <mat-option *ngFor="let device of a_devices | async"
+                        [value]="device.value">{{device.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label>Desktop Capture</mat-label>
+          <mat-select [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeDesktopSource($event)">
+            <mat-option *ngFor="let device of c_devices | async"
+                        [value]="getDesktopId(device.id)">{{device.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxFlex class="container-fluid mt-1">
+      <div class="container-fluid">
+        <div fxFlex fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap="3px">
+          <div fxFlex class="container-fluid">
+            <div fxFlex fxLayout="column wrap" fxLayoutAlign="start stretch" fxLayoutGap="3px">
+              <mat-form-field fxFlex>
+                <mat-label>해상도</mat-label>
+                <mat-select [(ngModel)]="selectedResolution" (selectionChange)="onVideoSettingChange($event)">
+                  <mat-option *ngFor="let resolution of resolutions"
+                              [value]="resolution">{{resolution.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <mat-label>프레임레이트</mat-label>
+                <mat-select [(ngModel)]="selectedFramerate" (selectionChange)="onVideoSettingChange($event)">
+                  <mat-option *ngFor="let framerate of framerates "
+                              [value]="framerate">{{framerate.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex class="container-fluid">
+            <div fxFlex fxLayout="column wrap" fxLayoutAlign="start stretch" fxLayoutGap="3px">
+              <mat-form-field fxFlex>
+                <mat-label>비디오 코덱</mat-label>
+                <mat-select [(ngModel)]="selectedCodec" (selectionChange)="onVideoSettingChange($event)">
+                  <mat-option *ngFor="let codec of codecs"
+                              [value]="codec">{{codec.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <mat-label>비디오 비트레이트</mat-label>
+                <mat-select [(ngModel)]="selectedBitrate" (selectionChange)="onVideoSettingChange($event)">
+                  <mat-option *ngFor="let bitrate of bitrates"
+                              [value]="bitrate">{{bitrate.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div fxFlex fxLayout="row wrap" fxLayoutAlign="start stretch" fxLayoutGap="3px">
+          <button fxFlex mat-icon-button mat-stroked-button (click)="onLiveCastStart($event)">
+            <mat-icon>cast</mat-icon>
+            방송시작
+          </button>
+          <button fxFlex mat-icon-button mat-stroked-button (click)="onLiveCastSwitch($event)">
+            <mat-icon>switch_video</mat-icon>
+            화면변경
+          </button>
+          <button fxFlex mat-icon-button mat-stroked-button (click)="onLiveCastStop($event)">
+            <mat-icon>stop_screen_share</mat-icon>
+            방송종료
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

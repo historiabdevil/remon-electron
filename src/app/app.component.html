@@ -1,18 +1,12 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
+  <mat-toolbar-row fxLayout="row wrap" fxLayoutAlign="space-between center">
     <button mat-icon-button (click)="snav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
     <h1>Studio</h1>
-    <button mat-icon-button routerLink="setting">
+    <button mat-icon-button routerLink="/setting">
       <mat-icon>settings</mat-icon>
     </button>
-    <form>
-      <mat-form-field>
-
-        <input matInput type="text" placeholder="Service ID">
-      </mat-form-field>
-    </form>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container>
