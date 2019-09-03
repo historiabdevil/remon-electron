@@ -1,8 +1,8 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
-import { HttpClientModule } from '@angular/common/http';
+
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import {
   MatAutocompleteModule,
@@ -41,12 +41,13 @@ import {
   MatTooltipModule,
   MatTreeModule
 } from '@angular/material';
-import { BrowserModule } from '@angular/platform-browser';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {CommonModule} from '@angular/common';
+
 
 @NgModule({
   imports: [
+    CommonModule,
     CdkTableModule,
     CdkTreeModule,
     MatAutocompleteModule,
@@ -83,7 +84,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule
+    MatTreeModule,
+    MatFormFieldModule
   ],
   exports: [
     CdkTableModule,
@@ -122,7 +124,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule
+    MatTreeModule,
+    MatFormFieldModule
   ]
 })
 export class MaterialModule {}

@@ -3,6 +3,8 @@ import {Routes, RouterModule} from '@angular/router';
 import {PageNotFoundComponent} from './shared/components';
 import {HomeComponent} from './home/home.component';
 import {FirstComponent} from './first/first.component';
+import {CasterComponent} from './caster/caster.component';
+import {SettingComponent} from './setting/setting.component';
 
 const routes: Routes = [
   {
@@ -17,6 +19,14 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'caster',
+    component: CasterComponent
+  },
+  {
+    path: 'setting',
+    component: SettingComponent
   },
   {
     path: '**',
