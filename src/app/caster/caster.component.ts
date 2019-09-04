@@ -240,8 +240,11 @@ export class CasterComponent implements OnInit {
 
   onChangeDesktopSource($event: any) {
     const id = $event.value.replace(/window|screen/g, function (match) {
+      console.log(match);
       return match + ':';
     });
+    console.log(id);
+    //@ts-ignore
     navigator.webkitGetUserMedia({
       audio: false,
       video: {
