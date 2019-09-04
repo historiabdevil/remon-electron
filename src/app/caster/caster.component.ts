@@ -80,6 +80,8 @@ export class CasterComponent implements OnInit {
   };
 
   remon: Remon;
+  listener = {};
+
   selectedVideoDevice: string;
   selectedAudioDevice: string;
   v_devices: Promise<Device[]>;
@@ -97,11 +99,7 @@ export class CasterComponent implements OnInit {
   selectedBitrate: SelectItem;
 
   constructor() {
-    const argu = {
-      listener: null,
-      config: this.config
-    };
-    this.remon = new Remon(argu);
+
 
   }
 
@@ -112,26 +110,36 @@ export class CasterComponent implements OnInit {
     this.c_devices = this.getCaptureStream();
     console.log(this.remon);
 
+
+    const width = this.selectedResolution.value.split('X')[0],
+      height = this.selectedResolution.value.split('X')[1],
+      framerate = this.selectedFramerate.value,
+      codec = this.selectedCodec.value,
+      bitrate = this.selectedBitrate.value;
+
+
+    let config = this.config;
+
   }
 
-  onClickPlay($event: any) {
-
-    if ($event.target.innerHTML === 'play_circle_outline') {
-      this.play_status = 'pause_circle_outline';
-    } else {
-      this.play_status = 'play_circle_outline';
-    }
-  }
-
-  onEnterOverPlayer($event: MouseEvent) {
-    this.isShowSrcBtn = true;
-  }
-
-  onLeavePlayer($event: MouseEvent) {
-    setTimeout(() => {
-      this.isShowSrcBtn = false;
-    }, 1000);
-  }
+  // onClickPlay($event: any) {
+  //
+  //   if ($event.target.innerHTML === 'play_circle_outline') {
+  //     this.play_status = 'pause_circle_outline';
+  //   } else {
+  //     this.play_status = 'play_circle_outline';
+  //   }
+  // }
+  //
+  // onEnterOverPlayer($event: MouseEvent) {
+  //   this.isShowSrcBtn = true;
+  // }
+  //
+  // onLeavePlayer($event: MouseEvent) {
+  //   setTimeout(() => {
+  //     this.isShowSrcBtn = false;
+  //   }, 1000);
+  // }
 
   getDevice(type: string): Promise<any> {
     return new Promise(resolve => {
@@ -170,53 +178,12 @@ export class CasterComponent implements OnInit {
         audio: true
       };
       desktopCapturer.getSources({types: ['window', 'screen']}, (err, sources) => {
+
         resolve(sources);
       });
     });
   }
 
-  onLiveCastStart(event: any) {
-    console.log(this.selectedBitrate);
-    this.remon.createCast();
-  }
-
-  onLiveCastStop(event: any) {
-    this.remon.close();
-  }
-
-  async onLiveCastSwitch(event: any) {
-    // this.remon.switchCamera();
-
-    // console.log(this.remon.context.mediaManager);
-    // console.log(this.selectedVideoDevice);
-    // const id = this.selectedVideoDevice.replace(/window|screen/g, function (match) {
-    //   return match + ':';
-    // });
-    // navigator.webkitGetUserMedia({
-    //   audio: false,
-    //   video: {
-    //     mandatory: {
-    //       chromeMediaSource: 'desktop',
-    //       chromeMediaSourceId: id,
-    //       minWidth: 1280,
-    //       maxWidth: 1280,
-    //       minHeight: 720,
-    //       maxHeight: 720
-    //     }
-    //   }
-    // }, (stream) => {
-    //   // console.log(this.remon.context.peerConnection.getLocalStreams());
-    //   // console.log(this.remon.context.peerConnection.getRemoteStreams());
-    //   // this.remon.context.peerConnection.addStream(stream);
-    //   // this.remon.context.bindLocalStreamToPeerConnection(stream);
-    //
-    //
-    //
-    //   console.log(this.remon);
-    // }, (e) => {
-    // });
-
-  }
 
   onChangeVideoSource($event: any) {
 
@@ -239,19 +206,23 @@ export class CasterComponent implements OnInit {
   }
 
   onChangeDesktopSource($event: any) {
+    console.log($event);
     const id = $event.value.replace(/window|screen/g, function (match) {
+      console.log(match);
       return match + ':';
     });
+    console.log(id);
+    // @ts-ignore
     navigator.webkitGetUserMedia({
-      audio: false,
+      audio: {
+        mandatory: {
+          chromeMediaSource: 'desktop'
+        }
+      },
       video: {
         mandatory: {
           chromeMediaSource: 'desktop',
-          chromeMediaSourceId: id,
-          minWidth: 1280,
-          maxWidth: 1280,
-          minHeight: 720,
-          maxHeight: 720
+          chromeMediaSourceId: $event.value
         }
       }
     }, (stream) => {
@@ -270,9 +241,42 @@ export class CasterComponent implements OnInit {
     console.log($event.target);
     console.log(this.selectedBitrate);
   }
+
+  /***
+   *
+   * 이벤트 제어 (RemoteMonster)
+   */
+
+
+
+
+  onLiveCastStart(event: any) {
+
+
+
+
+    const argu = {
+      listener: this.listener,
+      config: this.config
+    };
+
+    this.remon = new Remon(argu);
+    this.remon.createCast();
+  }
+
+  onLiveCastStop(event: any) {
+    this.remon.close();
+  }
+
+  onLiveCastSwitch(event: any) {
+
+  }
+
+
 }
 
+
 interface SelectItem {
-  name: string,
-  value: string
+  name: string;
+  value: string;
 }

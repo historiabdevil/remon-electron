@@ -54,13 +54,13 @@
                         [value]="device.value">{{device.viewValue}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex>
-          <mat-label>Desktop Capture</mat-label>
-          <mat-select [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeDesktopSource($event)">
-            <mat-option *ngFor="let device of c_devices | async"
-                        [value]="getDesktopId(device.id)">{{device.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+<!--        <mat-form-field fxFlex>-->
+<!--          <mat-label>Desktop Capture</mat-label>-->
+<!--          <mat-select [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeDesktopSource($event)">-->
+<!--            <mat-option *ngFor="let device of c_devices | async"-->
+<!--                        [value]="getDesktopId(device.id)">{{device.name}}</mat-option>-->
+<!--          </mat-select>-->
+<!--        </mat-form-field>-->
       </div>
     </div>
     <div fxFlex class="container-fluid mt-1">
