@@ -65,7 +65,7 @@ export class CasterComponent implements OnInit, AfterContentInit {
       local: '#v_cast',
     },
     media: {
-      audio: {deviceId:undefined},
+      audio: {deviceId: undefined},
       video: {
         width: {max: '1920', min: '320'},
         height: {max: '1080', min: '240'},
@@ -95,10 +95,10 @@ export class CasterComponent implements OnInit, AfterContentInit {
   v_src: any;
 
 
-  selectedResolution: SelectItem;
-  selectedCodec: SelectItem;
-  selectedFramerate: SelectItem;
-  selectedBitrate: SelectItem;
+  selectedResolution: string;
+  selectedCodec: string;
+  selectedFramerate: string;
+  selectedBitrate: string;
   textlog = 'LOG....\n';
 
 
@@ -221,24 +221,26 @@ export class CasterComponent implements OnInit, AfterContentInit {
   onLiveCastStart(event: any) {
     const setting = this.electronService.fs.readFileSync('./setting.json').toString();
     const jsonSetting = JSON.parse(setting);
-    let config = this.config;
+    const config = this.config;
     config.credential.serviceId = jsonSetting.serviceid;
     config.credential.key = jsonSetting.servicekey;
     // tslint:disable-next-line:radix
-    config.media.video.width.min = this.selectedResolution.value.split('X')[0];
+    config.media.video.width.min = this.selectedResolution.split('X')[0];
     // tslint:disable-next-line:radix
-    config.media.video.width.max = this.selectedResolution.value.split('X')[0];
+    config.media.video.width.max = this.selectedResolution.split('X')[0];
     // tslint:disable-next-line:radix
-    config.media.video.height.min = this.selectedResolution.value.split('X')[1];
+    config.media.video.height.min = this.selectedResolution.split('X')[1];
     // tslint:disable-next-line:radix
-    config.media.video.height.max = this.selectedResolution.value.split('X')[1];
-    con
+    config.media.video.height.max = this.selectedResolution.split('X')[1];
+    config.media.video.frameRate = Number(this.selectedFramerate);
+    config.media.video.codec = this.selectedCodec;
     config.media.video.deviceId = this.selectedVideoDevice;
     config.media.audio.deviceId = this.selectedAudioDevice;
 
+    console.log(config);
     const argu = {
       listener: this.listener,
-      config: this.config
+      config: config
     };
     this.remon = new Remon(argu);
     this.remon.createCast();
