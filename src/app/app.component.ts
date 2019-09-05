@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { ElectronService } from './core/services';
-import { TranslateService } from '@ngx-translate/core';
-import { AppConfig } from '../environments/environment';
+import {Component} from '@angular/core';
+import {ElectronService} from './core/services';
+import {TranslateService} from '@ngx-translate/core';
+import {AppConfig} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -25,5 +25,14 @@ export class AppComponent {
     } else {
       console.log('Mode web');
     }
+  }
+
+  onViwerNewWinodw($event: MouseEvent) {
+    const win = new this.electronService.remote.BrowserWindow({
+      height: 600,
+      width: 800
+    });
+    win.loadURL('http://localhost:4200/viewer');
+
   }
 }

@@ -1,15 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterContentInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Device} from '../home/home.component';
 // @ts-ignore
 import Remon from '@remotemonster/sdk';
 import {desktopCapturer} from 'electron';
+import {FileService} from '../shared/service/file.service';
+import {ElectronService} from '../core/services';
+import {MaterialModule} from '../material.module';
+import {MatPaginator, MatTableDataSource} from '@angular/material';
+
 
 @Component({
   selector: 'app-caster',
   templateUrl: './caster.component.html',
   styleUrls: ['./caster.component.scss']
 })
-export class CasterComponent implements OnInit {
+export class CasterComponent implements OnInit, AfterContentInit {
+
+  constructor(public electronService: ElectronService) {
+
+  }
 
   play_status: string;
   isShowSrcBtn: boolean;
@@ -56,12 +65,13 @@ export class CasterComponent implements OnInit {
       local: '#v_cast',
     },
     media: {
-      audio: true,
+      audio: {deviceId:undefined},
       video: {
         width: {max: '1920', min: '320'},
         height: {max: '1080', min: '240'},
         codec: 'H264',
-        frameRate: 29.97
+        frameRate: 29.97,
+        deviceId: undefined
       },
     },
     dev: {
@@ -72,12 +82,6 @@ export class CasterComponent implements OnInit {
     }
   };
 
-  listener = {
-    onInit: function () {
-    },
-    onCreate: function () {
-    }
-  };
 
   remon: Remon;
   selectedVideoDevice: string;
@@ -95,23 +99,63 @@ export class CasterComponent implements OnInit {
   selectedCodec: SelectItem;
   selectedFramerate: SelectItem;
   selectedBitrate: SelectItem;
+  textlog = 'LOG....\n';
 
-  constructor() {
-    const argu = {
-      listener: null,
-      config: this.config
-    };
-    this.remon = new Remon(argu);
 
-  }
+  displayColumns: string[] = ['Branch', 'Resolution', 'Speed'];
+  dataSource = new MatTableDataSource<Connection>(CONNECTION_DATA);
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+  connections: string;
+
+  listener = {
+    onInit: (token) => {
+      this.textlog += token + '\n';
+    },
+    onCreate: (channelId) => {
+      this.textlog += channelId + '\n';
+    },
+    onJoin: (channelId) => {
+      this.textlog += channelId + '\n';
+    },
+    onConnect: (channelId) => {
+      this.textlog += channelId + '\n';
+    },
+    onComplete: () => {
+    },
+    onClose: () => {
+    },
+    onError: (error) => {
+      this.textlog += error + '\n';
+    },
+    onStateChange: (state) => {
+      this.textlog += state + '\n';
+    },
+    onStat: (report) => {
+      this.textlog += report + '\n';
+    }
+  };
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
     this.play_status = 'play_circle_outline';
     this.v_devices = this.getDevice('video');
     this.a_devices = this.getDevice('audio');
     this.c_devices = this.getCaptureStream();
-    console.log(this.remon);
 
+  }
+
+  ngAfterContentInit(): void {
+    try {
+      const castconfig = this.electronService.fs.readFileSync('./caster.json');
+      const jsonCastconfig = JSON.parse(castconfig.toString());
+      this.selectedBitrate = jsonCastconfig.bitrate;
+      this.selectedResolution = jsonCastconfig.resolution;
+      this.selectedCodec = jsonCastconfig.codec;
+      this.selectedFramerate = jsonCastconfig.frameRate;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   onClickPlay($event: any) {
@@ -137,7 +181,6 @@ export class CasterComponent implements OnInit {
     return new Promise(resolve => {
       const devs: Device[] = [];
       navigator.mediaDevices.enumerateDevices().then(function (devices) {
-        console.log(devices);
         devices.forEach(function (item) {
           if (item.kind === (type + 'input')) {
             devs.push({viewValue: item.label, value: item.deviceId});
@@ -176,8 +219,39 @@ export class CasterComponent implements OnInit {
   }
 
   onLiveCastStart(event: any) {
-    console.log(this.selectedBitrate);
+    const setting = this.electronService.fs.readFileSync('./setting.json').toString();
+    const jsonSetting = JSON.parse(setting);
+    let config = this.config;
+    config.credential.serviceId = jsonSetting.serviceid;
+    config.credential.key = jsonSetting.servicekey;
+    // tslint:disable-next-line:radix
+    config.media.video.width.min = this.selectedResolution.value.split('X')[0];
+    // tslint:disable-next-line:radix
+    config.media.video.width.max = this.selectedResolution.value.split('X')[0];
+    // tslint:disable-next-line:radix
+    config.media.video.height.min = this.selectedResolution.value.split('X')[1];
+    // tslint:disable-next-line:radix
+    config.media.video.height.max = this.selectedResolution.value.split('X')[1];
+    con
+    config.media.video.deviceId = this.selectedVideoDevice;
+    config.media.audio.deviceId = this.selectedAudioDevice;
+
+    const argu = {
+      listener: this.listener,
+      config: this.config
+    };
+    this.remon = new Remon(argu);
     this.remon.createCast();
+
+    // const castconfig = {
+    //   resolution: this.selectedResolution,
+    //   frameRate: this.selectedFramerate,
+    //   codec: this.selectedCodec,
+    //   bitrate: this.selectedBitrate
+    // };
+    // this.electronService.fs.writeFileSync('./caster.json', JSON.stringify(castconfig));
+
+
   }
 
   onLiveCastStop(event: any) {
@@ -242,6 +316,7 @@ export class CasterComponent implements OnInit {
     const id = $event.value.replace(/window|screen/g, function (match) {
       return match + ':';
     });
+    // @ts-ignore
     navigator.webkitGetUserMedia({
       audio: false,
       video: {
@@ -273,6 +348,16 @@ export class CasterComponent implements OnInit {
 }
 
 interface SelectItem {
-  name: string,
-  value: string
+  name: string;
+  value: string;
 }
+
+export interface Connection {
+  Branch: string;
+  Resolution: String;
+  Speed: String;
+}
+
+const CONNECTION_DATA: Connection[] = [
+  {Branch: '1', Resolution: '1920X1080', Speed: '1M'}
+];

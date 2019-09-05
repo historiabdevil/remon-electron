@@ -1,7 +1,6 @@
-import { app, BrowserWindow, screen } from 'electron';
+import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-
 
 
 let win, serve;
@@ -15,10 +14,10 @@ function createWindow() {
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: width,
-    height: height,
+    x: width / 2 - 512,
+    y: height / 2 - 384,
+    width: 1024,
+    height: 768,
     webPreferences: {
       nodeIntegration: true,
     },

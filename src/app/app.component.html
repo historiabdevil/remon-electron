@@ -9,8 +9,8 @@
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
-<mat-sidenav-container>
-  <mat-sidenav #snav [mode]="'over'">
+<mat-sidenav-container fxLayout="column" fxLayoutAlign="start strech">
+  <mat-sidenav #snav [mode]="'over'" style="width:200px;">
     <mat-nav-list>
       <a mat-list-item routerLink="/first" (click)="snav.close()">
         <mat-icon>home</mat-icon>
@@ -18,12 +18,20 @@
       <a mat-list-item routerLink="/caster" (click)="snav.close()">
         <mat-icon>cast</mat-icon>
         방송하기</a>
-      <a mat-list-item routerLink="/viewer" (click)="snav.close()">
-        <mat-icon>desktop_mac</mat-icon>
-        방송보기</a>
+      <span  fxLayout="row" fxLayoutAlign="start strech">
+        <a mat-list-item fxFlex="80" routerLink="/viewer" (click)="snav.close()">
+          <mat-icon>desktop_mac</mat-icon>
+          방송보기
+        </a>
+        <button fxFlex mat-icon-button style="float: left;" (click)="snav.close(); onViwerNewWinodw($event)">
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      </span>
       <a mat-list-item routerLink="/setting" (click)="snav.close()">
         <mat-icon>settings</mat-icon>
-        설정하기</a>
+        설정하기
+
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content fxFlex>

@@ -1,26 +1,28 @@
-<div fxLayout="column wrap" fxLayoutAlign="center center">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>접속 정보 수정</mat-card-title>
-    </mat-card-header>
-    <mat-card-content fxLayout="column wrap" fxLayoutAlign="center center">
-      <form>
-        <mat-form-field fxFill>
-          <input matInput type="text" placeholder="Service ID">
-        </mat-form-field>
-        <mat-form-field fxFill>
-          <input matInput type="text" placeholder="Service Key">
-        </mat-form-field>
-        <mat-form-field fxFill>
-          <input matInput type="text" placeholder="사용자">
-        </mat-form-field>
-      </form>
-    </mat-card-content>
-    <mat-card-actions>
-      <div fxLayout="row">
-        <button fxFlex mat-stroked-button color="primary">저장</button>
-        <button fxFlex mat-stroked-button color="warn">취소</button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+<div class="container-fluid mt-5">
+  <div fxLayout="column wrap" fxLayoutAlign="start center">
+    <mat-card fxFlex>
+      <mat-card-header>
+        <mat-card-title>접속 정보 수정</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column wrap" fxLayoutAlign="center center">
+        <div class="container-overview mt-5">
+          <mat-form-field fxFill>
+            <input matInput [(ngModel)]="serviceid" type="text" placeholder="Service ID">
+          </mat-form-field>
+          <mat-form-field fxFill>
+            <input matInput [(ngModel)]="servicekey" type="text" placeholder="Service Key">
+          </mat-form-field>
+          <mat-form-field fxFill>
+            <input matInput [(ngModel)]="user" type="text" placeholder="사용자">
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div fxLayout="row">
+          <button fxFlex mat-stroked-button (click)="onClickSave($event)" color="primary">저장</button>
+          <button fxFlex mat-stroked-button (click)="onClickCancel($event)" color="warn">취소</button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

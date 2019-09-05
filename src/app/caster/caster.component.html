@@ -11,11 +11,11 @@
           <video #v_src [srcObject]="v_src_obj" [src]="v_src" autoplay class="embed-responsive-item">
             <mat-icon class="vertial-center center-button">videocam_off</mat-icon>
           </video>
-<!--          <div class="embed-responsive-item" [fxShow]="isShowSrcBtn">-->
-<!--            <button class="vertial-center" mat-icon-button (click)="onClickPlay($event)">-->
-<!--              <mat-icon class="center-button">{{play_status}}</mat-icon>-->
-<!--            </button>-->
-<!--          </div>-->
+          <!--          <div class="embed-responsive-item" [fxShow]="isShowSrcBtn">-->
+          <!--            <button class="vertial-center" mat-icon-button (click)="onClickPlay($event)">-->
+          <!--              <mat-icon class="center-button">{{play_status}}</mat-icon>-->
+          <!--            </button>-->
+          <!--          </div>-->
         </div>
       </mat-card-content>
       <mat-card-actions></mat-card-actions>
@@ -54,13 +54,13 @@
                         [value]="device.value">{{device.viewValue}}</mat-option>
           </mat-select>
         </mat-form-field>
-<!--        <mat-form-field fxFlex>-->
-<!--          <mat-label>Desktop Capture</mat-label>-->
-<!--          <mat-select [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeDesktopSource($event)">-->
-<!--            <mat-option *ngFor="let device of c_devices | async"-->
-<!--                        [value]="getDesktopId(device.id)">{{device.name}}</mat-option>-->
-<!--          </mat-select>-->
-<!--        </mat-form-field>-->
+        <!--        <mat-form-field fxFlex>-->
+        <!--          <mat-label>Desktop Capture</mat-label>-->
+        <!--          <mat-select [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeDesktopSource($event)">-->
+        <!--            <mat-option *ngFor="let device of c_devices | async"-->
+        <!--                        [value]="getDesktopId(device.id)">{{device.name}}</mat-option>-->
+        <!--          </mat-select>-->
+        <!--        </mat-form-field>-->
       </div>
     </div>
     <div fxFlex class="container-fluid mt-1">
@@ -72,14 +72,14 @@
                 <mat-label>해상도</mat-label>
                 <mat-select [(ngModel)]="selectedResolution" (selectionChange)="onVideoSettingChange($event)">
                   <mat-option *ngFor="let resolution of resolutions"
-                              [value]="resolution">{{resolution.name}}</mat-option>
+                              [value]="resolution.value">{{resolution.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field fxFlex>
                 <mat-label>프레임레이트</mat-label>
                 <mat-select [(ngModel)]="selectedFramerate" (selectionChange)="onVideoSettingChange($event)">
                   <mat-option *ngFor="let framerate of framerates "
-                              [value]="framerate">{{framerate.name}}</mat-option>
+                              [value]="framerate.value">{{framerate.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -90,14 +90,14 @@
                 <mat-label>비디오 코덱</mat-label>
                 <mat-select [(ngModel)]="selectedCodec" (selectionChange)="onVideoSettingChange($event)">
                   <mat-option *ngFor="let codec of codecs"
-                              [value]="codec">{{codec.name}}</mat-option>
+                              [value]="codec.value">{{codec.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field fxFlex>
                 <mat-label>비디오 비트레이트</mat-label>
                 <mat-select [(ngModel)]="selectedBitrate" (selectionChange)="onVideoSettingChange($event)">
                   <mat-option *ngFor="let bitrate of bitrates"
-                              [value]="bitrate">{{bitrate.name}}</mat-option>
+                              [value]="bitrate.value">{{bitrate.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -121,5 +121,54 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div class="container-fluid mt-3">
+  <div fxFlex fxLayout="row wrap" fxLayoutAlign="start strech" fxLayoutGap="5px">
+    <mat-divider fxFlex></mat-divider>
+  </div>
+</div>
+<div class="container-fluid mt-1">
+  <div fxFlex fxLayout="row wrap" fxLayoutAlign="start strech" fxLayoutGap="5px">
+    <mat-accordion fxFlex>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Connections</mat-panel-title>
+          <mat-panel-description>{{connections}}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <table mat-table fxFlexFill [dataSource]="dataSource">
+          <ng-container matColumnDef="Branch">
+            <th mat-header-cell *matHeaderCellDef>지점</th>
+            <td mat-cell *matCellDef="let element">{{element.Branch}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Resolution">
+            <th mat-header-cell *matHeaderCellDef>해상도</th>
+            <td mat-cell *matCellDef="let element">{{element.Resolution}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Speed">
+            <th mat-header-cell *matHeaderCellDef>속도</th>
+            <td mat-cell *matCellDef="let element">{{element.Speed}}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+<div class="container-fluid mt-1">
+  <div fxFlex fxLayout="row wrap" fxLayoutAlign="start strech" fxLayoutGap="5px">
+    <mat-accordion fxFlex>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>LOGS</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field fxFlex>
+          <textarea matInput fxFlexFill ref-texarea [(ngModel)]="textlog"  rows="15" style="resize: none;"></textarea>
+        </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>

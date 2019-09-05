@@ -25,6 +25,8 @@ import {FirstComponent} from './first/first.component';
 import {CasterComponent} from './caster/caster.component';
 import {SettingComponent} from './setting/setting.component';
 import {MatInputModule} from '@angular/material/input';
+import {FileService} from './shared/service/file.service';
+import { ViewerComponent } from './viewer/viewer.component';
 
 
 
@@ -34,7 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, FirstComponent, CasterComponent, SettingComponent],
+  declarations: [AppComponent, HomeComponent, FirstComponent, CasterComponent, SettingComponent, ViewerComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -54,7 +56,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
   ],
-  providers: [ElectronService],
+  providers: [ElectronService, FileService],
   exports: [],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
