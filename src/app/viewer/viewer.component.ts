@@ -100,7 +100,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
   }
 
   refresh($event: MouseEvent) {
-    this.createViewer();
+    window.location.reload();
   }
 
   ngOnDestroy(): void {
