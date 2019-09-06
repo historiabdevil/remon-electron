@@ -75,7 +75,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       },
     },
     dev: {
-      logLevel: 'VERBOSE'
+      logLevel: 'DEBUG'
     },
     rtc: {
       simulate: false

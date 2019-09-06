@@ -72,6 +72,10 @@ export class ViewerComponent implements OnInit, OnDestroy {
 
 
   async ngOnInit() {
+    this.createViewer();
+  }
+
+  createViewer(){
     const setting = this.electronService.fs.readFileSync('./setting.json').toString();
     const jsonSetting = JSON.parse(setting);
     const config = this.config;
@@ -81,6 +85,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
       listener: this.listener,
       config: config
     };
+    this.remon = undefined;
     this.remon = new Remon(argu);
     this.remon.fetchCasts().then((cast) => {
       this.textlog += '[FIND CHANNEL] : ' + JSON.stringify(cast) + '\n';
@@ -88,8 +93,6 @@ export class ViewerComponent implements OnInit, OnDestroy {
 
     });
   }
-
-
   fullsize($event: MouseEvent) {
     const viewer = document.getElementById('viewer');
     //@ts-ignore
@@ -97,11 +100,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
   }
 
   refresh($event: MouseEvent) {
-    this.remon.close();
-    this.remon.fetchCasts().then((cast) => {
-      this.remon.joinCast(cast[0].id);
-      console.log(cast);
-    });
+    this.createViewer();
   }
 
   ngOnDestroy(): void {
