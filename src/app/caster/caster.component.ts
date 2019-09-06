@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Device} from '../home/home.component';
 // @ts-ignore
 import Remon from '@remotemonster/sdk';
@@ -14,7 +14,7 @@ import {MatPaginator, MatTableDataSource} from '@angular/material';
   templateUrl: './caster.component.html',
   styleUrls: ['./caster.component.scss']
 })
-export class CasterComponent implements OnInit, AfterContentInit {
+export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
 
   constructor(public electronService: ElectronService) {
 
@@ -221,6 +221,7 @@ export class CasterComponent implements OnInit, AfterContentInit {
   }
 
   onLiveCastStart(event: any) {
+    this.remon = undefined;
     const setting = this.electronService.fs.readFileSync('./setting.json').toString();
     const jsonSetting = JSON.parse(setting);
     const config = this.config;
@@ -350,6 +351,10 @@ export class CasterComponent implements OnInit, AfterContentInit {
   onVideoSettingChange($event: any) {
     console.log($event.target);
     console.log(this.selectedBitrate);
+  }
+
+  ngOnDestroy(): void {
+    this.remon.close();
   }
 }
 
