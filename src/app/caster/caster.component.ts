@@ -65,7 +65,7 @@ export class CasterComponent implements OnInit, AfterContentInit {
       local: '#v_cast',
     },
     media: {
-      audio: {deviceId: undefined},
+      audio: true,
       video: {
         width: {max: '1920', min: '320'},
         height: {max: '1080', min: '240'},
@@ -110,29 +110,31 @@ export class CasterComponent implements OnInit, AfterContentInit {
 
   listener = {
     onInit: (token) => {
-      this.textlog += token + '\n';
+      this.textlog += 'Init : ' + token + '\n';
     },
     onCreate: (channelId) => {
-      this.textlog += channelId + '\n';
+      this.textlog += 'Created : ' + channelId + '\n';
     },
     onJoin: (channelId) => {
-      this.textlog += channelId + '\n';
+      this.textlog += 'Join : ' + channelId + '\n';
     },
     onConnect: (channelId) => {
-      this.textlog += channelId + '\n';
+      this.textlog += 'Connect : ' + channelId + '\n';
     },
     onComplete: () => {
+      this.textlog += 'Completed : ' + '\n';
     },
     onClose: () => {
+      this.textlog += 'Close : ' + '\n';
     },
     onError: (error) => {
-      this.textlog += error + '\n';
+      this.textlog += '[' + Date.now() + ']' + 'Error: ' + error + '\n';
     },
     onStateChange: (state) => {
-      this.textlog += state + '\n';
+      this.textlog += '[' + Date.now() + ']' + 'State: ' + state + '\n';
     },
     onStat: (report) => {
-      this.textlog += report + '\n';
+      this.textlog +=  '[' + Date.now() + ']' + 'Report: ' + JSON.stringify(report) + '\n';
     }
   };
 
@@ -235,7 +237,7 @@ export class CasterComponent implements OnInit, AfterContentInit {
     config.media.video.frameRate = Number(this.selectedFramerate);
     config.media.video.codec = this.selectedCodec;
     config.media.video.deviceId = this.selectedVideoDevice;
-    config.media.audio.deviceId = this.selectedAudioDevice;
+    // config.media.audio.deviceId = this.selectedAudioDevice;
 
     console.log(config);
     const argu = {
@@ -244,7 +246,9 @@ export class CasterComponent implements OnInit, AfterContentInit {
     };
     this.remon = new Remon(argu);
     this.remon.createCast();
-
+    this.remon.fetchCasts().then((cast) => {
+      console.log(cast);
+    });
     // const castconfig = {
     //   resolution: this.selectedResolution,
     //   frameRate: this.selectedFramerate,

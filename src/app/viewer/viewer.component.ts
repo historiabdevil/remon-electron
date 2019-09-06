@@ -12,29 +12,31 @@ export class ViewerComponent implements OnInit {
 
   listener = {
     onInit: (token) => {
-      this.textlog += token + '\n';
+      this.textlog += 'Init : ' + token + '\n';
     },
     onCreate: (channelId) => {
-      this.textlog += channelId + '\n';
+      this.textlog += 'Created : ' + channelId + '\n';
     },
     onJoin: (channelId) => {
-      this.textlog += channelId + '\n';
+      this.textlog += 'Join : ' + channelId + '\n';
     },
     onConnect: (channelId) => {
-      this.textlog += channelId + '\n';
+      this.textlog += 'Connect : ' + channelId + '\n';
     },
     onComplete: () => {
+      this.textlog += 'Completed : ' + '\n';
     },
     onClose: () => {
+      this.textlog += 'Close : ' + '\n';
     },
     onError: (error) => {
-      this.textlog += error + '\n';
+      this.textlog += '[' + Date.now() + ']' + 'Error: ' + error + '\n';
     },
     onStateChange: (state) => {
-      this.textlog += state + '\n';
+      this.textlog += '[' + Date.now() + ']' + 'State: ' + state + '\n';
     },
     onStat: (report) => {
-      this.textlog += report + '\n';
+      this.textlog +=  '[' + Date.now() + ']' + 'Report: ' + JSON.stringify(report) + '\n';
     }
   };
 
@@ -81,8 +83,9 @@ export class ViewerComponent implements OnInit {
     };
     this.remon = new Remon(argu);
     this.remon.fetchCasts().then((cast) => {
+      //console.log(cast);
       this.remon.joinCast(cast[0].id);
-      console.log(cast);
+
     });
   }
 
