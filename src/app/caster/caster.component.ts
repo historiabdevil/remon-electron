@@ -71,7 +71,8 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
         height: {max: '1080', min: '240'},
         codec: 'H264',
         frameRate: 29.97,
-        deviceId: undefined
+        deviceId: undefined,
+        maxBandwidth: '1000'
       },
     },
     dev: {
@@ -235,6 +236,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     config.media.video.height.min = this.selectedResolution.split('X')[1];
     // tslint:disable-next-line:radix
     config.media.video.height.max = this.selectedResolution.split('X')[1];
+    config.media.video.maxBandwidth = this.selectedBitrate;
     config.media.video.frameRate = Number(this.selectedFramerate);
     config.media.video.codec = this.selectedCodec;
     config.media.video.deviceId = this.selectedVideoDevice;
