@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 // @ts-ignore
 import Remon from '@remotemonster/sdk';
 import {ElectronService} from '../core/services';
@@ -8,7 +8,7 @@ import {ElectronService} from '../core/services';
   templateUrl: './viewer.component.html',
   styleUrls: ['./viewer.component.scss']
 })
-export class ViewerComponent implements OnInit {
+export class ViewerComponent implements OnInit, OnDestroy {
 
   listener = {
     onInit: (token) => {
@@ -74,7 +74,7 @@ export class ViewerComponent implements OnInit {
   async ngOnInit() {
     const setting = this.electronService.fs.readFileSync('./setting.json').toString();
     const jsonSetting = JSON.parse(setting);
-    let config = this.config;
+    const config = this.config;
     config.credential.serviceId = jsonSetting.serviceid;
     config.credential.key = jsonSetting.servicekey;
     const argu = {
@@ -89,6 +89,7 @@ export class ViewerComponent implements OnInit {
     });
   }
 
+
   fullsize($event: MouseEvent) {
     const viewer = document.getElementById('viewer');
     //@ts-ignore
@@ -96,9 +97,14 @@ export class ViewerComponent implements OnInit {
   }
 
   refresh($event: MouseEvent) {
+    this.remon.close();
     this.remon.fetchCasts().then((cast) => {
       this.remon.joinCast(cast[0].id);
       console.log(cast);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.remon.close();
   }
 }
