@@ -83,7 +83,7 @@ export class ViewerComponent implements OnInit {
     };
     this.remon = new Remon(argu);
     this.remon.fetchCasts().then((cast) => {
-      //console.log(cast);
+      this.textlog += '[FIND CHANNEL] : ' + JSON.stringify(cast) + '\n';
       this.remon.joinCast(cast[0].id);
 
     });
