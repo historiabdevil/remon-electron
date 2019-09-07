@@ -98,12 +98,12 @@ export class ViewerComponent implements OnInit, OnDestroy {
         window.originalStream = stream;
         return stream;
       }).then((stream) => {
-      const audioSource = audioContext.createMediaStreamSource(stream);
-      const audioDestination = audioContext.createMediaStreamDestination();
-      audioSource.connect(gainNode);
-      gainNode.connect(audioDestination);
-      gainNode.gain.value = 1;
-      window.localStream = audioDestination.stream;
+      // const audioSource = audioContext.createMediaStreamSource(stream);
+      // const audioDestination = audioContext.createMediaStreamDestination();
+      // audioSource.connect(gainNode);
+      // gainNode.connect(audioDestination);
+      // gainNode.gain.value = 1;
+      // window.localStream = audioDestination.stream;
     });
   }
 
