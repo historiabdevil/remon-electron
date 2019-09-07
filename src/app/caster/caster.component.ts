@@ -3,10 +3,9 @@ import {Device} from '../home/home.component';
 // @ts-ignore
 import Remon from '@remotemonster/sdk';
 import {desktopCapturer} from 'electron';
-import {FileService} from '../shared/service/file.service';
 import {ElectronService} from '../core/services';
-import {MaterialModule} from '../material.module';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {from, Observable} from 'rxjs';
 
 
 @Component({
@@ -65,7 +64,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       local: '#v_cast',
     },
     media: {
-      audio: true,
+      audio: {deviceId: 'default'},
       video: {
         width: {max: '1920', min: '320'},
         height: {max: '1080', min: '240'},
@@ -87,11 +86,12 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
   remon: Remon;
   selectedVideoDevice: string;
   selectedAudioDevice: string;
-  v_devices: Promise<Device[]>;
-  a_devices: Promise<Device[]>;
+  devices: Promise<any>;
+  v_devices: Promise<Device>;
+  a_devices: Promise<Device>;
   c_devices: Promise<MediaStream>;
   src_video: Promise<any>;
-
+  obs_device: Observable<any>;
   v_src_obj: any;
   v_src: any;
 
@@ -135,16 +135,12 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       this.textlog += '[' + Date.now() + ']' + 'State: ' + state + '\n';
     },
     onStat: (report) => {
-      this.textlog +=  '[' + Date.now() + ']' + 'Report: ' + JSON.stringify(report) + '\n';
+      this.textlog += '[' + Date.now() + ']' + 'Report: ' + JSON.stringify(report) + '\n';
     }
   };
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.play_status = 'play_circle_outline';
-    this.v_devices = this.getDevice('video');
-    this.a_devices = this.getDevice('audio');
-    this.c_devices = this.getCaptureStream();
+
 
   }
 
@@ -156,6 +152,17 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       this.selectedResolution = jsonCastconfig.resolution;
       this.selectedCodec = jsonCastconfig.codec;
       this.selectedFramerate = jsonCastconfig.frameRate;
+      this.dataSource.paginator = this.paginator;
+      this.play_status = 'play_circle_outline';
+      this.devices = this.getDevice();
+      this.devices.then((resolve) => {
+        this.v_devices = new Promise<Device>(resolve1 => {resolve1(resolve.videos);})
+        this.a_devices = new Promise<Device>(resolve1 => {resolve1(resolve.audios);})
+      });
+
+
+
+      this.c_devices = this.getCaptureStream();
     } catch (e) {
       console.error(e);
     }
@@ -180,19 +187,24 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     }, 1000);
   }
 
-  getDevice(type: string): Promise<any> {
-    return new Promise(resolve => {
-      const devs: Device[] = [];
-      navigator.mediaDevices.enumerateDevices().then(function (devices) {
-        devices.forEach(function (item) {
-          if (item.kind === (type + 'input')) {
-            devs.push({viewValue: item.label, value: item.deviceId});
+  getDevice(): Promise<any> {
+    return new Promise<any>(resolve => {
+      const audios: Device[] = [];
+      const videos: Device[] = [];
+
+      navigator.mediaDevices.enumerateDevices().then((devices) => {
+        console.log(devices);
+        devices.forEach((item) => {
+          if (item.kind !== 'videoinput') {
+            if (item.kind === 'audiooutput') {
+              audios.push({viewValue: item.label, value: item.deviceId} as Device);
+            }
+          } else {
+            videos.push({viewValue: item.label, value: item.deviceId} as Device);
           }
         });
-      }).then(function () {
-        resolve(devs);
+        resolve({audios: audios, videos: videos});
       });
-
     });
   }
 
@@ -240,7 +252,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     config.media.video.frameRate = Number(this.selectedFramerate);
     config.media.video.codec = this.selectedCodec;
     config.media.video.deviceId = this.selectedVideoDevice;
-    // config.media.audio.deviceId = this.selectedAudioDevice;
+    config.media.audio.deviceId = this.selectedAudioDevice;
 
     console.log(config);
     const argu = {
@@ -371,6 +383,12 @@ export interface Connection {
   Speed: String;
 }
 
+export interface Devices {
+  videos: Device[];
+  audios: Device[];
+}
+
 const CONNECTION_DATA: Connection[] = [
   {Branch: '1', Resolution: '1920X1080', Speed: '1M'}
 ];
+

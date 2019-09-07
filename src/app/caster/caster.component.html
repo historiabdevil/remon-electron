@@ -47,13 +47,13 @@
                         [value]="device.value">{{device.viewValue}}</mat-option>
           </mat-select>
         </mat-form-field>
-<!--        <mat-form-field fxFlex>-->
-<!--          <mat-label>Capture Audio Devices</mat-label>-->
-<!--          <mat-select [(ngModel)]="selectedAudioDevice" (selectionChange)="onChangeAudioSource($event)">-->
-<!--            <mat-option *ngFor="let device of a_devices | async"-->
-<!--                        [value]="device.value">{{device.viewValue}}</mat-option>-->
-<!--          </mat-select>-->
-<!--        </mat-form-field>-->
+        <mat-form-field fxFlex>
+          <mat-label>Capture Audio Devices</mat-label>
+          <mat-select [(ngModel)]="selectedAudioDevice" (selectionChange)="onChangeAudioSource($event)">
+            <mat-option *ngFor="let device of a_devices | async"
+                        [value]="device.value">{{device.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
         <!--        <mat-form-field fxFlex>-->
         <!--          <mat-label>Desktop Capture</mat-label>-->
         <!--          <mat-select [(ngModel)]="selectedVideoDevice" (selectionChange)="onChangeDesktopSource($event)">-->
