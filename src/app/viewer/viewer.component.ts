@@ -36,7 +36,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
       this.textlog += '[' + Date.now() + ']' + 'State: ' + state + '\n';
     },
     onStat: (report) => {
-      this.textlog +=  '[' + Date.now() + ']' + 'Report: ' + JSON.stringify(report) + '\n';
+      this.textlog += '[' + Date.now() + ']' + 'Report: ' + JSON.stringify(report) + '\n';
     }
   };
 
@@ -75,7 +75,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
     this.createViewer();
   }
 
-  createViewer(){
+  createViewer() {
     const setting = this.electronService.fs.readFileSync('./setting.json').toString();
     const jsonSetting = JSON.parse(setting);
     const config = this.config;
@@ -90,9 +90,23 @@ export class ViewerComponent implements OnInit, OnDestroy {
     this.remon.fetchCasts().then((cast) => {
       this.textlog += '[FIND CHANNEL] : ' + JSON.stringify(cast) + '\n';
       this.remon.joinCast(cast[0].id);
-
+    });
+    const audioContext = new AudioContext();
+    const gainNode = audioContext.createGain();
+    navigator.mediaDevices.getUserMedia({audio: true})
+      .then((stream) => {
+        window.originalStream = stream;
+        return stream;
+      }).then((stream) => {
+      const audioSource = audioContext.createMediaStreamSource(stream);
+      const audioDestination = audioContext.createMediaStreamDestination();
+      audioSource.connect(gainNode);
+      gainNode.connect(audioDestination);
+      gainNode.gain.value = 1;
+      window.localStream = audioDestination.stream;
     });
   }
+
   fullsize($event: MouseEvent) {
     const viewer = document.getElementById('viewer');
     //@ts-ignore
