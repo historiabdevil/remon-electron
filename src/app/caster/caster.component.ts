@@ -54,17 +54,17 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     {name: '4M', value: '4000'}
   ];
 
-
+  //{deviceId: 'default'}
   config = {
     credential: {
       serviceId: 'hdyang@catenoid.net',
       key: '21c728d5182241392c20021c33d3a604c3e5380076406d11'
     },
     view: {
-      local: '#v_cast',
+      local: '#v_cast'
     },
     media: {
-      audio: {deviceId: 'default'},
+      audio: true,
       video: {
         width: {max: '1920', min: '320'},
         height: {max: '1080', min: '240'},
@@ -72,10 +72,10 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
         frameRate: 29.97,
         deviceId: undefined,
         maxBandwidth: '1000'
-      },
+      }
     },
     dev: {
-      logLevel: 'DEBUG'
+      logLevel: 'VERBOSE'
     },
     rtc: {
       simulate: false
@@ -129,7 +129,12 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       this.textlog += 'Close : ' + '\n';
     },
     onError: (error) => {
+      if (typeof (error) === 'string'){
       this.textlog += '[' + Date.now() + ']' + 'Error: ' + error + '\n';
+      }
+      else {
+        this.textlog += '[' + Date.now() + ']' + 'Error: ' + JSON.stringify(error) + '\n';
+      }
     },
     onStateChange: (state) => {
       this.textlog += '[' + Date.now() + ']' + 'State: ' + state + '\n';
@@ -156,10 +161,13 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       this.play_status = 'play_circle_outline';
       this.devices = this.getDevice();
       this.devices.then((resolve) => {
-        this.v_devices = new Promise<Device>(resolve1 => {resolve1(resolve.videos);})
-        this.a_devices = new Promise<Device>(resolve1 => {resolve1(resolve.audios);})
+        this.v_devices = new Promise<Device>(resolve1 => {
+          resolve1(resolve.videos);
+        });
+        this.a_devices = new Promise<Device>(resolve1 => {
+          resolve1(resolve.audios);
+        });
       });
-
 
 
       this.c_devices = this.getCaptureStream();
@@ -191,16 +199,14 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     return new Promise<any>(resolve => {
       const audios: Device[] = [];
       const videos: Device[] = [];
-
+      // @ts-ignore
       navigator.mediaDevices.enumerateDevices().then((devices) => {
         console.log(devices);
         devices.forEach((item) => {
-          if (item.kind !== 'videoinput') {
-            if (item.kind === 'audiooutput') {
-              audios.push({viewValue: item.label, value: item.deviceId} as Device);
-            }
-          } else {
+          if (item.kind === 'videoinput') {
             videos.push({viewValue: item.label, value: item.deviceId} as Device);
+          } else if (item.kind === 'audiooutput') {
+            audios.push({viewValue: item.label, value: item.deviceId} as Device);
           }
         });
         resolve({audios: audios, videos: videos});
@@ -252,7 +258,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     config.media.video.frameRate = Number(this.selectedFramerate);
     config.media.video.codec = this.selectedCodec;
     config.media.video.deviceId = this.selectedVideoDevice;
-    config.media.audio.deviceId = this.selectedAudioDevice;
+    // config.media.audio.deviceId = this.selectedAudioDevice;
 
     console.log(config);
     const argu = {
@@ -261,9 +267,15 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     };
     this.remon = new Remon(argu);
     this.remon.createCast();
-    this.remon.fetchCasts().then((cast) => {
-      console.log(cast);
-    });
+    // setTimeout(() => {
+    //     this.remon.fetchCasts().then((cast) => {
+    //       console.log(cast);
+    //       this.remon.joinCast(cast[0].id);
+    //     });
+    //   },
+    //   3000
+    // );
+
     // const castconfig = {
     //   resolution: this.selectedResolution,
     //   frameRate: this.selectedFramerate,
@@ -330,7 +342,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   onChangeAudioSource(event: any) {
-    this.src_video = this.getStream();
+    //this.src_video = this.getStream();
   }
 
   onChangeDesktopSource($event: any) {

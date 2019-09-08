@@ -93,18 +93,18 @@ export class ViewerComponent implements OnInit, OnDestroy {
     });
     const audioContext = new AudioContext();
     const gainNode = audioContext.createGain();
-    navigator.mediaDevices.getUserMedia({audio: true})
-      .then((stream) => {
-        window.originalStream = stream;
-        return stream;
-      }).then((stream) => {
-      // const audioSource = audioContext.createMediaStreamSource(stream);
-      // const audioDestination = audioContext.createMediaStreamDestination();
-      // audioSource.connect(gainNode);
-      // gainNode.connect(audioDestination);
-      // gainNode.gain.value = 1;
-      // window.localStream = audioDestination.stream;
-    });
+    // navigator.mediaDevices.getUserMedia({audio: true})
+    //   .then((stream) => {
+    //     window.originalStream = stream;
+    //     return stream;
+    //   }).then((stream) => {
+    //   // const audioSource = audioContext.createMediaStreamSource(stream);
+    //   // const audioDestination = audioContext.createMediaStreamDestination();
+    //   // audioSource.connect(gainNode);
+    //   // gainNode.connect(audioDestination);
+    //   // gainNode.gain.value = 1;
+    //   // window.localStream = audioDestination.stream;
+    // });
   }
 
   fullsize($event: MouseEvent) {
