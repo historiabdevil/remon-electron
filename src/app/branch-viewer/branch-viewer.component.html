@@ -1,26 +1,29 @@
 <div class="container-fluid mt-3">
   <div fxFlex fxLayout="row wrap" fxLayoutAlign="center stretch" fxLayoutGap="20px">
-    <div fxFlex="20"></div>
     <mat-card fxFlex>
       <mat-card-header>
-        <mat-card-title>라이브영상</mat-card-title>
+        <mat-card-title>원본영상</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div fxFlex class="embed-responsive embed-responsive-16by9">
           <video id="viewer" autoplay controls class="embed-responsive-item">
             <mat-icon class="vertial-center center-button">videocam_off</mat-icon>
           </video>
+          <!--          <div class="embed-responsive-item" [fxShow]="isShowSrcBtn">-->
+          <!--            <button class="vertial-center" mat-icon-button (click)="onClickPlay($event)">-->
+          <!--              <mat-icon class="center-button">{{play_status}}</mat-icon>-->
+          <!--            </button>-->
+          <!--          </div>-->
         </div>
       </mat-card-content>
       <mat-card-actions></mat-card-actions>
     </mat-card>
-    <div fxFlex="20"></div>
   </div>
 </div>
 <div class="container-fluid mt-3">
   <div fxFlex fxLayout="row wrap" fxLayoutAlign="start strech" fxLayoutGap="5px">
-  <button fxFlex mat-stroked-button (click)="fullsize($event)">전체화면</button>
-  <button fxFlex mat-stroked-button (click)="refresh($event)">재로딩</button>
+    <button fxFlex mat-stroked-button (click)="fullsize($event)">전체화면</button>
+    <button fxFlex mat-stroked-button (click)="refresh($event)">재로딩</button>
   </div>
 </div>
 <div class="container-fluid mt-1">
@@ -37,3 +40,4 @@
     </mat-accordion>
   </div>
 </div>
+

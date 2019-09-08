@@ -1,23 +1,20 @@
-import {AfterContentInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Connection, Device, SelectItem} from '../home/home.component';
+import {AfterContentInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Device, SelectItem, Connection} from '../home/home.component';
+import {Observable} from 'rxjs';
+
+import {desktopCapturer} from 'electron';
 // @ts-ignore
 import Remon from '@remotemonster/sdk';
-import {desktopCapturer} from 'electron';
 import {ElectronService} from '../core/services';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
-import {from, Observable} from 'rxjs';
-import adapter from 'webrtc-adapter';
-
 
 @Component({
-  selector: 'app-caster',
-  templateUrl: './caster.component.html',
-  styleUrls: ['./caster.component.scss']
+  selector: 'app-branch-caster',
+  templateUrl: './branch-caster.component.html',
+  styleUrls: ['./branch-caster.component.scss']
 })
-export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
+export class BranchCasterComponent implements OnInit, OnDestroy, AfterContentInit {
 
   constructor(public electronService: ElectronService) {
-
   }
 
   play_status: string;
@@ -36,7 +33,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     {name: '25FPS', value: '25'},
     {name: '29.97FPS', value: '29.97'},
     {name: '30FPS', value: '30'},
-    {name: '60FPS', value: '60'}
+    // {name: '60FPS', value: '60'}
   ];
   codecs: SelectItem[] = [
     {name: 'H.264', value: 'H264'},
@@ -48,12 +45,13 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     {name: '800K', value: '800'},
     {name: '1M', value: '1000'},
     {name: '1.5M', value: '1500'},
-    {name: '2M', value: '2000'},
-    {name: '2.5M', value: '2500'},
-    {name: '3M', value: '3000'},
-    {name: '3.5M', value: '3500'},
-    {name: '4M', value: '4000'}
+    // {name: '2M', value: '2000'},
+    // {name: '2.5M', value: '2500'},
+    // {name: '3M', value: '3000'},
+    // {name: '3.5M', value: '3500'},
+    // {name: '4M', value: '4000'}
   ];
+
   config = {
     credential: {
       serviceId: 'hdyang@catenoid.net',
@@ -89,25 +87,13 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
   v_devices: Promise<Device>;
   a_devices: Promise<Device>;
   c_devices: Promise<MediaStream>;
-  src_video: Promise<any>;
-  obs_device: Observable<any>;
   v_src_obj: any;
-  v_src: any;
-
 
   selectedResolution: string;
   selectedCodec: string;
   selectedFramerate: string;
   selectedBitrate: string;
   textlog = 'LOG....\n';
-
-
-  displayColumns: string[] = ['Branch', 'Resolution', 'Speed'];
-  dataSource = new MatTableDataSource<Connection>(CONNECTION_DATA);
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-
-  connections: string;
-
   listener = {
     onInit: (token) => {
       this.textlog += 'Init : ' + token + '\n';
@@ -142,22 +128,19 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       this.textlog += `[${Date.now()}] Report: ${JSON.stringify(result)}\n`;
     }
   };
-  isLive: boolean;
+  isCast: boolean;
 
   ngOnInit() {
-
-
   }
 
   ngAfterContentInit(): void {
     try {
-      const castconfig = this.electronService.fs.readFileSync('./caster.json');
+      const castconfig = this.electronService.fs.readFileSync('./branch-caster.json');
       const jsonCastconfig = JSON.parse(castconfig.toString());
       this.selectedBitrate = jsonCastconfig.bitrate;
       this.selectedResolution = jsonCastconfig.resolution;
       this.selectedCodec = jsonCastconfig.codec;
       this.selectedFramerate = jsonCastconfig.frameRate;
-      this.dataSource.paginator = this.paginator;
       this.play_status = 'play_circle_outline';
       this.devices = this.getDevice();
       this.devices.then((resolve) => {
@@ -249,9 +232,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       codec: this.selectedCodec,
       bitrate: this.selectedBitrate
     };
-    this.electronService.fs.writeFileSync('./caster.json', JSON.stringify(castconfig));
-
-
+    this.electronService.fs.writeFileSync('./branch-caster.json', JSON.stringify(castconfig));
     this.remon = undefined;
     const setting = this.electronService.fs.readFileSync('./setting.json').toString();
     const jsonSetting = JSON.parse(setting);
@@ -272,22 +253,20 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
     config.media.video.deviceId = this.selectedVideoDevice;
     config.media.audio.deviceId = this.selectedAudioDevice;
 
-    console.log(config);
     const argu = {
       listener: this.listener,
       config: config
     };
     this.remon = new Remon(argu);
     const date = new Date().getTime();
-    const channelId = `goto_${date}`;
-    this.remon.createCast(channelId);
-    this.isLive = true;
-    return false;
+    const channelId = `${jsonSetting.user}_${date}`;
+    this.remon.connectCall(channelId);
+    this.isCast = true;
   }
 
   onLiveCastStop(event: any) {
     this.remon.close();
-    this.isLive = false;
+    this.isCast = false;
   }
 
   onLiveCastSwitch(event: any) {
@@ -351,10 +330,5 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
       this.remon.close();
     }
   }
+
 }
-
-
-const CONNECTION_DATA: Connection[] = [
-  {Branch: '1', Resolution: '1920X1080', Speed: '1M'}
-];
-

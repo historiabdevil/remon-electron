@@ -6,6 +6,9 @@ import {FirstComponent} from './first/first.component';
 import {CasterComponent} from './caster/caster.component';
 import {SettingComponent} from './setting/setting.component';
 import {ViewerComponent} from './viewer/viewer.component';
+import {BranchCasterComponent} from './branch-caster/branch-caster.component';
+import {BranchViewerListComponent} from './branch-viewer-list/branch-viewer-list.component';
+import {BranchViewerComponent} from './branch-viewer/branch-viewer.component';
 
 const routes: Routes = [
   {
@@ -32,6 +35,18 @@ const routes: Routes = [
   {
     path: 'viewer',
     component: ViewerComponent
+  },
+  {
+    path: 'branch-caster',
+    component: BranchCasterComponent
+  },
+  {
+    path: 'branch-viewer-list',
+    component: BranchViewerListComponent
+  },
+  {
+    path: 'branch-viewer/:id',
+    component: BranchViewerComponent
   },
   {
     path: '**',

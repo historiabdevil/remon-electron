@@ -8,6 +8,22 @@ export interface Device {
   viewValue: string;
 }
 
+export interface SelectItem {
+  name: string;
+  value: string;
+}
+
+export interface Connection {
+  Branch: string;
+  Resolution: String;
+  Speed: String;
+}
+
+export interface Devices {
+  videos: Device[];
+  audios: Device[];
+}
+
 // @ts-ignore
 @Component({
   selector: 'app-home',

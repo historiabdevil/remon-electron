@@ -27,6 +27,9 @@ import {SettingComponent} from './setting/setting.component';
 import {MatInputModule} from '@angular/material/input';
 import {FileService} from './shared/service/file.service';
 import { ViewerComponent } from './viewer/viewer.component';
+import { BranchCasterComponent } from './branch-caster/branch-caster.component';
+import { BranchViewerListComponent } from './branch-viewer-list/branch-viewer-list.component';
+import { BranchViewerComponent } from './branch-viewer/branch-viewer.component';
 
 
 
@@ -36,7 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, FirstComponent, CasterComponent, SettingComponent, ViewerComponent],
+  declarations: [AppComponent, HomeComponent, FirstComponent, CasterComponent, SettingComponent, ViewerComponent, BranchCasterComponent, BranchViewerListComponent, BranchViewerComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

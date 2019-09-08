@@ -1,3 +1,20 @@
-<div>
-  <a mat-stroked-button routerLink="/caster">방송하기</a>
+<div class="container-fluid main">
+<!--  <div fxLayout="row wrap" fxLayoutAlign="center center" fsxLayoutGap="10px" class="vertial-center">-->
+<!--    <div class="link-group" fxLayout="row wrap" fxLayoutAlign="center center" fsxLayoutGap="10px">-->
+      <mat-grid-list fxFlexFill cols="2" rowHeight="2:1">
+        <mat-grid-tile>
+          <a fxflex mat-raised-button routerLink="/caster" color="accent">방송 하기</a>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <a fxflex mat-raised-button routerLink="/viewer" color="accent">방송 보기</a>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <a fxflex mat-raised-button routerLink="/branch-caster" color="accent">지점 송출</a>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <a fxflex mat-raised-button routerLink="/branch-caster-list" color="accent">지점 송출 목록</a>
+        </mat-grid-tile>
+      </mat-grid-list>
+<!--    </div>-->
+<!--  </div>-->
 </div>

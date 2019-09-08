@@ -1,0 +1,16 @@
+<div class="container-fluid mt-3">
+  <div fxFlex fxLayout="row wrap" fxLayoutAlign="center stretch" fxLayoutGap="20px">
+    <mat-grid-list fxFlexFill cols="4" rowHeight="2:1">
+      <mat-grid-tile fxFlex fxLayoutGap="5px" *ngFor="let item of casts | async">
+        <mat-card fxFlex fxLayout="column" fxLayoutAlign="cetner strech">
+          <mat-card-header fxFlex>
+            <mat-card-title>{{item.id.split('_')[0]}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-actions fxFlex>
+            <button mat-stroked-button color="primary"  [disabled]="item.state === 'WAIT'" data-id="{{item.id}}" (click)="onConnectCall($event, item.id)">연결</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

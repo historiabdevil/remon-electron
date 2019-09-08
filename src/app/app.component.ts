@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {ElectronService} from './core/services';
 import {TranslateService} from '@ngx-translate/core';
 import {AppConfig} from '../environments/environment';
+import * as url from "url";
+import * as path from "path";
 
 @Component({
   selector: 'app-root',
@@ -27,12 +29,8 @@ export class AppComponent {
     }
   }
 
-  onViwerNewWinodw($event: MouseEvent) {
-    const win = new this.electronService.remote.BrowserWindow({
-      height: 600,
-      width: 800
-    });
-    win.loadURL('http://localhost:4200/viewer');
-
+  onViwerNewWinodw($event: MouseEvent, link: string) {
+    const win = window.open(`/#/${link}`, '_blank');
+    console.log(win);
   }
 }

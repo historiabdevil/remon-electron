@@ -18,19 +18,38 @@
       <a mat-list-item routerLink="/caster" (click)="snav.close()">
         <mat-icon>cast</mat-icon>
         방송하기</a>
-      <span  fxLayout="row" fxLayoutAlign="start strech">
-        <a mat-list-item fxFlex="80" routerLink="/viewer" (click)="snav.close()">
+      <span mat-list-item fxLayout="row" fxLayoutAlign="start strech">
+        <a fxFlex="80" routerLink="/viewer" (click)="snav.close()">
           <mat-icon>desktop_mac</mat-icon>
           방송보기
         </a>
-        <button fxFlex mat-icon-button style="float: left;" (click)="snav.close(); onViwerNewWinodw($event)">
+        <button fxFlex mat-icon-button style="float: left;" (click)="snav.close(); onViwerNewWinodw($event,'viewer')">
           <mat-icon>open_in_new</mat-icon>
         </button>
+      </span>
+      <span mat-list-item fxLayout="row" fxLayoutAlign="start strech">
+      <a fxFlex="80" routerLink="/branch-caster" (click)="snav.close()">
+        <mat-icon>settings</mat-icon>
+        지점송출
+      </a>
+      <button fxFlex mat-icon-button style="float: left;"
+              (click)="snav.close(); onViwerNewWinodw($event,'branch-caster')">
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+        </span>
+      <span mat-list-item fxLayout="row" fxLayoutAlign="start strech">
+      <a fxFlex="80" routerLink="/branch-viewer-list" (click)="snav.close()">
+        <mat-icon>list</mat-icon>
+        지점송출목록
+      </a>
+      <button fxFlex mat-icon-button style="float: left;"
+              (click)="snav.close(); onViwerNewWinodw($event,'branch-viewer-list')">
+        <mat-icon>open_in_new</mat-icon>
+      </button>
       </span>
       <a mat-list-item routerLink="/setting" (click)="snav.close()">
         <mat-icon>settings</mat-icon>
         설정하기
-
       </a>
     </mat-nav-list>
   </mat-sidenav>

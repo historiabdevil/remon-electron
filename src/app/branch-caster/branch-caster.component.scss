@@ -1,0 +1,26 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+
+.vertial-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center-button {
+  transform: scale(5);
+  color: white;
+  z-index: 0;
+}
+.center-button:hover {
+  color: red;
+}
+
+video {
+  border: 2px bold white;
+  background: black;
+  z-index: 9999;
+}
+

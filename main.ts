@@ -8,7 +8,6 @@ const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
 function createWindow() {
-
   const electronScreen = screen;
   const {width, height} = electronScreen.getPrimaryDisplay().workAreaSize;
 
@@ -36,9 +35,9 @@ function createWindow() {
     }));
   }
 
-  if (serve) {
-    win.webContents.openDevTools();
-  }
+  // if (serve) {
+  //   win.webContents.openDevTools();
+  // }
 
   // Emitted when the window is closed.
   win.on('closed', () => {

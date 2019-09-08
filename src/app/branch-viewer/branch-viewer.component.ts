@@ -1,15 +1,17 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ElectronService} from '../core/services';
 // @ts-ignore
 import Remon from '@remotemonster/sdk';
-import {ElectronService} from '../core/services';
-import {NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {switchMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Component({
-  selector: 'app-viewer',
-  templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.scss']
+  selector: 'app-branch-viewer',
+  templateUrl: './branch-viewer.component.html',
+  styleUrls: ['./branch-viewer.component.scss']
 })
-export class ViewerComponent implements OnInit, OnDestroy {
+export class BranchViewerComponent implements OnInit, OnDestroy {
 
   listener = {
     onInit: (token) => {
@@ -67,13 +69,10 @@ export class ViewerComponent implements OnInit, OnDestroy {
     }
   };
   textlog = '';
+  branch: Observable<string>;
 
-  constructor(public electronService: ElectronService, private router: Router) {
-    this.router.events.subscribe((e: any) => {
-      if(e instanceof NavigationEnd){
-        console.log(e);
-      }
-    });
+  constructor(public electronService: ElectronService, private route: ActivatedRoute,
+              private router: Router) {
   }
 
 
@@ -91,26 +90,10 @@ export class ViewerComponent implements OnInit, OnDestroy {
       listener: this.listener,
       config: config
     };
+    this.branch = this.route.paramMap.pipe(switchMap((params: ParamMap) => params.get('id')));
     this.remon = undefined;
     this.remon = new Remon(argu);
-    this.remon.fetchCasts().then((cast) => {
-      this.textlog += '[FIND CHANNEL] : ' + JSON.stringify(cast) + '\n';
-      this.remon.joinCast(cast[0].id);
-    });
-    const audioContext = new AudioContext();
-    const gainNode = audioContext.createGain();
-    // navigator.mediaDevices.getUserMedia({audio: true})
-    //   .then((stream) => {
-    //     window.originalStream = stream;
-    //     return stream;
-    //   }).then((stream) => {
-    //   // const audioSource = audioContext.createMediaStreamSource(stream);
-    //   // const audioDestination = audioContext.createMediaStreamDestination();
-    //   // audioSource.connect(gainNode);
-    //   // gainNode.connect(audioDestination);
-    //   // gainNode.gain.value = 1;
-    //   // window.localStream = audioDestination.stream;
-    // });
+    this.remon.connectCall(this.branch);
   }
 
   fullsize($event: MouseEvent) {
@@ -128,4 +111,5 @@ export class ViewerComponent implements OnInit, OnDestroy {
       this.remon.close();
     }
   }
+
 }
