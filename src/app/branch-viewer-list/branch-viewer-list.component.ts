@@ -36,6 +36,9 @@ export class BranchViewerListComponent implements OnInit, AfterContentInit {
       listener: null
     });
     this.casts = this.remon.fetchCalls();
+    setInterval(() => {
+      this.casts = this.remon.fetchCalls();
+    }, 2000);
     // tempcast.then((cs) => {
     //   this.casts = cs.length > 1 ? cs : [];
     //   console.log(cs);
@@ -52,7 +55,7 @@ export class BranchViewerListComponent implements OnInit, AfterContentInit {
       resizable: false,
       frame: true,
       transparent: false,
-      webPreferences:{
+      webPreferences: {
         nodeIntegration: true
       }
     });

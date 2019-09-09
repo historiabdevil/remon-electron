@@ -69,10 +69,11 @@ export class BranchViewerComponent implements OnInit, OnDestroy {
     }
   };
   textlog = '';
-  branch: Observable<string>;
+  branch: string;
 
   constructor(public electronService: ElectronService, private route: ActivatedRoute,
               private router: Router) {
+    this.branch = this.route.snapshot.params['id'];
   }
 
 
@@ -90,9 +91,9 @@ export class BranchViewerComponent implements OnInit, OnDestroy {
       listener: this.listener,
       config: config
     };
-    this.branch = this.route.paramMap.pipe(switchMap((params: ParamMap) => params.get('id')));
     this.remon = undefined;
     this.remon = new Remon(argu);
+    console.log(JSON.stringify(this.branch));
     this.remon.connectCall(this.branch);
   }
 

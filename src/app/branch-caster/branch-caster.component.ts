@@ -112,6 +112,9 @@ export class BranchCasterComponent implements OnInit, OnDestroy, AfterContentIni
     },
     onClose: () => {
       this.textlog += 'Close : ' + '\n';
+      this.isCast = false;
+      this.remon.close();
+      this.remon = undefined;
     },
     onError: (error) => {
       if (typeof (error) === 'string') {
