@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
-  "version": "6.1.0",
+  "name": "BroadcastStudio",
+  "version": "0.9.0",
   "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
   "homepage": "https://github.com/maximegris/angular-electron",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "hdyang",
+    "email": "hdyang@catenoid.net"
   },
   "keywords": [
     "angular",
