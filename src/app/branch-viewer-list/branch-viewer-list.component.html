@@ -7,7 +7,7 @@
             <mat-card-title>{{item.id.split('_')[0]}}</mat-card-title>
           </mat-card-header>
           <mat-card-actions fxFlex>
-            <button mat-stroked-button color="primary"  [disabled]="item.state === 'WAIT'" data-id="{{item.id}}" (click)="onConnectCall($event, item.id)">연결</button>
+            <button mat-stroked-button color="primary"  [disabled]="item.state !== 'WAIT'" data-id="{{item.id}}" (click)="onConnectCall($event, item.id)">연결</button>
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>

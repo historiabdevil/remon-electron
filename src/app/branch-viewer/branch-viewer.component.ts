@@ -104,7 +104,9 @@ export class BranchViewerComponent implements OnInit, OnDestroy {
   }
 
   refresh($event: MouseEvent) {
-    window.location.reload();
+    if (this.remon) {
+      this.remon.close();
+    }
   }
 
   ngOnDestroy(): void {
