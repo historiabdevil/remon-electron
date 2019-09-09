@@ -30,7 +30,18 @@ export class AppComponent {
   }
 
   onViwerNewWinodw($event: MouseEvent, link: string) {
-    const win = window.open(`/#/${link}`, '_blank');
+    var win = new this.electronService.remote.BrowserWindow({
+      width: 1024,
+      height: 768,
+      center: true,
+      resizable: false,
+      frame: true,
+      transparent: false,
+      webPreferences:{
+        nodeIntegration: true
+      }
+    });
+    win.loadURL('file://' + __dirname + '/index.html#/' + link);
     console.log(win);
   }
 }

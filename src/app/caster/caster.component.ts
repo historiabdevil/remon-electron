@@ -243,6 +243,7 @@ export class CasterComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   onLiveCastStart(event: any) {
+    event.preventDefault();
     const castconfig = {
       resolution: this.selectedResolution,
       frameRate: this.selectedFramerate,

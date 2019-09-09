@@ -131,6 +131,10 @@ export class BranchCasterComponent implements OnInit, OnDestroy, AfterContentIni
   isCast: boolean;
 
   ngOnInit() {
+    window.onbeforeunload = (e) => {
+      console.log(e)
+
+    };
   }
 
   ngAfterContentInit(): void {

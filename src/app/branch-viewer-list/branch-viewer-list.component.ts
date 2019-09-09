@@ -45,7 +45,18 @@ export class BranchViewerListComponent implements OnInit, AfterContentInit {
 
   onConnectCall($event: MouseEvent, id: string) {
 
-    console.log(id);
-    window.open(`/#/branch-viewer/${id}`);
+    var win = new this.electronService.remote.BrowserWindow({
+      width: 1024,
+      height: 768,
+      center: true,
+      resizable: false,
+      frame: true,
+      transparent: false,
+      webPreferences:{
+        nodeIntegration: true
+      }
+    });
+    win.loadURL('file://' + __dirname + '/index.html#/branch-viewer/' + id);
+    console.log(win);
   }
 }
