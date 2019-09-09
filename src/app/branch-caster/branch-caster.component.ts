@@ -61,7 +61,7 @@ export class BranchCasterComponent implements OnInit, OnDestroy, AfterContentIni
       local: '#v_cast'
     },
     media: {
-      audio: {deviceId: undefined},
+      audio: false,
       video: {
         width: {max: '1920', min: '320'},
         height: {max: '1080', min: '240'},
@@ -255,7 +255,7 @@ export class BranchCasterComponent implements OnInit, OnDestroy, AfterContentIni
     config.media.video.frameRate = Number(this.selectedFramerate);
     config.media.video.codec = this.selectedCodec;
     config.media.video.deviceId = this.selectedVideoDevice;
-    config.media.audio.deviceId = this.selectedAudioDevice;
+    // config.media.audio.deviceId = this.selectedAudioDevice;
 
     const argu = {
       listener: this.listener,
